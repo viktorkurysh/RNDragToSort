@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, StatusBar} from 'react-native';
+import {View, Text, StyleSheet, StatusBar, SafeAreaView} from 'react-native';
+import {Value} from 'react-native-reanimated';
 
-import {cards} from './Card';
+import {cards, CARD_HEIGHT} from './Card';
 import SortableCard from './SortableCard';
 
 const styles = StyleSheet.create({
@@ -29,18 +30,22 @@ const styles = StyleSheet.create({
 });
 
 function App() {
+  const offSets = cards.map(
+    (_, index) => new Value(CARD_HEIGHT * index + index * 16),
+  );
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0080FF" />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Drag to Sort</Text>
       </View>
       <View style={styles.body}>
         {cards.map((card, index) => (
-          <SortableCard key={card.id} {...{card, index}} />
+          <SortableCard key={card.id} {...{card, index, offSets}} />
         ))}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
